@@ -1,0 +1,4 @@
+/* Degradado único de toda la página: marfil → arena suave → arena. */
+.main {
+  background: linear-gradient(to bottom, #f8f7f2 0%, #f1ede4 50%, #e7ddce 100%);
+}

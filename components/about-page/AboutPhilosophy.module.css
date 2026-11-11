@@ -1,0 +1,140 @@
+.section {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* El Bloque 1 ya aporta la separación superior. */
+  padding-block: 0 clamp(56px, 6.5vw, 120px);
+  color: #1a1a1a;
+}
+
+/* Texto a la izquierda y fotografía vertical a la derecha. */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  column-gap: calc(var(--gap) * 2);
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(28px, 2.6vw, 48px);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* Mismo párrafo que el Bloque 1: justificado con guiones. */
+.paragraph {
+  margin: 1.1em 0 0;
+  max-width: 58ch;
+  font-size: clamp(16px, 1.25vw, 21px);
+  line-height: 1.6;
+  color: #555;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+.figure {
+  margin: 0;
+  aspect-ratio: 4 / 5;
+}
+
+/* El recorte va en un elemento interior para que el observador detecte la figura. */
+.frame {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ecebe7;
+}
+
+.media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.photo {
+  object-fit: cover;
+  object-position: center;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 16px;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: #5f5f5f;
+}
+
+/* Fade Up en el texto e Image Reveal en la fotografía. */
+.text[data-reveal="pending"] {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+}
+
+.text[data-reveal="done"] {
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+
+.figure[data-reveal="pending"] .frame {
+  clip-path: inset(100% 0 0 0 round 12px);
+}
+
+.figure[data-reveal="pending"] .media {
+  transform: scale(1.06);
+}
+
+.figure[data-reveal="done"] .frame {
+  clip-path: inset(0 0 0 0 round 12px);
+  transition: clip-path 1000ms var(--ease-out) 150ms;
+}
+
+.figure[data-reveal="done"] .media {
+  transition: transform 1200ms var(--ease-out) 150ms;
+}
+
+/* Tablet: se mantienen las dos columnas, con la foto algo más ancha. */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* Móvil: texto arriba y fotografía debajo. */
+@media (max-width: 699.98px) {
+  .section {
+    padding-block: 0 48px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 40px;
+  }
+
+  /* Formato horizontal en móvil para que la foto no ocupe toda la pantalla. */
+  .figure {
+    aspect-ratio: 4 / 3;
+  }
+
+  .paragraph {
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text[data-reveal],
+  .figure[data-reveal] .frame,
+  .figure[data-reveal] .media {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+}

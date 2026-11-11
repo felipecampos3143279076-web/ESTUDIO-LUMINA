@@ -1,0 +1,115 @@
+/* Menú del sitio, compartido por el Hero de Inicio y las páginas interiores. */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  font-size: clamp(15px, 1.25vw, 22px);
+}
+
+/* Los enlaces se reparten junto a la marca como en el diseño original. */
+.nav,
+.navList {
+  display: contents;
+}
+
+.navList {
+  list-style: none;
+}
+
+.navLink {
+  color: #6b6b6b;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.25s;
+}
+
+.navLink:hover,
+.navLink:focus-visible {
+  color: #1a1a1a;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.arrow {
+  font-size: 0.9em;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-shrink: 0;
+  color: #1a1a1a;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brandName {
+  font-weight: 300;
+  font-size: 1.9em;
+  letter-spacing: 0.28em;
+  line-height: 1;
+}
+
+.brandRule {
+  width: 1px;
+  height: 1.7em;
+  background: #1a1a1a;
+}
+
+.brandKind {
+  font-weight: 400;
+}
+
+.brand:focus-visible,
+.navLink:focus-visible {
+  outline: 2px solid #1a1a1a;
+  outline-offset: 4px;
+}
+
+/* Con la columna estrecha, la navegación pasa a una segunda línea. */
+@media (max-width: 1279.98px) {
+  .header {
+    flex-wrap: wrap;
+    gap: 12px 24px;
+  }
+
+  .nav {
+    display: block;
+    width: 100%;
+  }
+
+  .navList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 20px;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@media (max-width: 699.98px) {
+  .brand {
+    gap: 12px;
+  }
+
+  .navList {
+    justify-content: flex-start;
+    gap: 4px 18px;
+  }
+
+  .navLink {
+    display: inline-block;
+    padding-block: 4px;
+  }
+
+  .contact {
+    display: inline-flex;
+  }
+}

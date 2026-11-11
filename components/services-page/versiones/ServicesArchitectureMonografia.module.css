@@ -1,0 +1,275 @@
+.section {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --line: rgb(26 26 26 / 0.14);
+  /* El Bloque 1 ya aporta la separación superior. */
+  padding-block: 0 clamp(56px, 6.5vw, 120px);
+  color: #1a1a1a;
+}
+
+/* Monografía: la foto domina la página izquierda (7 de 12 columnas); la
+   derecha funciona como página de texto, del titular arriba al índice abajo. */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "figure head"
+    "figure body";
+  column-gap: calc(var(--gap) * 2);
+}
+
+/* Titular y número: el titular manda; el 01 acompaña a un tercio de su
+   tamaño, en gris y alineado con la parte alta de la primera línea. */
+.head {
+  grid-area: head;
+  position: relative;
+  /* El tamaño del titular se calcula sobre el ancho de su columna. */
+  container-type: inline-size;
+  --display: min(96px, 100cqi / 4.6);
+}
+
+.title {
+  margin: 0;
+  font-weight: 300;
+  font-size: var(--display);
+  line-height: 0.94;
+  letter-spacing: -0.035em;
+}
+
+.line {
+  display: block;
+  white-space: nowrap;
+}
+
+/* Guion de corte generado por CSS: no lo leen los lectores de pantalla. */
+.line:first-child::after {
+  content: "–" / "";
+}
+
+.number {
+  position: absolute;
+  top: 0;
+  right: 0;
+  /* Compensa el interlineado para que coincida con la altura de las mayúsculas. */
+  padding-top: calc(var(--display) * 0.12);
+  font-weight: 300;
+  font-size: max(16px, var(--display) * 0.3);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: #5f5f5f;
+  font-variant-numeric: tabular-nums;
+}
+
+.figure {
+  grid-area: figure;
+  margin: 0;
+}
+
+.frame {
+  aspect-ratio: 4 / 5;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ecebe7;
+}
+
+.media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.photo {
+  object-fit: cover;
+  object-position: center;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 16px;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: #5f5f5f;
+}
+
+/* Cota bajo la foto: línea fina con remates verticales en los extremos. */
+.caption {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 16px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: #5f5f5f;
+}
+
+.dimension {
+  position: relative;
+  flex: 1;
+  height: 9px;
+  background: linear-gradient(var(--line), var(--line)) center / 100% 1px no-repeat;
+  border-inline: 1px solid rgb(26 26 26 / 0.3);
+}
+
+.captionText {
+  flex-shrink: 0;
+}
+
+/* Texto: el párrafo bajo el titular y el índice apoyado en la base de la foto. */
+.body {
+  grid-area: body;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(36px, 4vw, 64px);
+  padding-top: clamp(28px, 3vw, 48px);
+  /* Alto de la cota (16 + 9 px): el índice termina justo en la base de la foto. */
+  padding-bottom: 25px;
+  font-size: clamp(16px, 1.25vw, 21px);
+}
+
+.paragraph {
+  margin: 0;
+  max-width: 58ch;
+  line-height: 1.6;
+  color: #555;
+  text-align: justify;
+  /* Sin guiones automáticos que partan las palabras. */
+  hyphens: manual;
+}
+
+/* Índice de libro: nombre, línea de puntos y número de entrada. */
+.index {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--line);
+}
+
+.entry {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-block: clamp(12px, 1vw, 16px);
+  font-size: clamp(16px, 1.15vw, 20px);
+  line-height: 1.35;
+}
+
+.name {
+  min-width: 0;
+  text-wrap: balance;
+}
+
+.leader {
+  flex: 1;
+  min-width: 24px;
+  border-bottom: 1px dotted rgb(26 26 26 / 0.35);
+  transform: translateY(-0.3em);
+}
+
+.entryNumber {
+  flex-shrink: 0;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: #5f5f5f;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Animaciones: Fade Up en titular, párrafo y entradas del índice
+   (escalonadas) e Image Reveal en la fotografía. */
+.head[data-reveal="pending"],
+.paragraph[data-reveal="pending"],
+.entry[data-reveal="pending"] {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+}
+
+.head[data-reveal="done"],
+.paragraph[data-reveal="done"],
+.entry[data-reveal="done"] {
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+
+.entry[data-reveal="done"] {
+  transition-delay: calc(var(--i) * 90ms);
+}
+
+.figure[data-reveal="pending"] .frame {
+  clip-path: inset(100% 0 0 0 round 12px);
+}
+
+.figure[data-reveal="pending"] .media {
+  transform: scale(1.06);
+}
+
+.figure[data-reveal="done"] .frame {
+  clip-path: inset(0 0 0 0 round 12px);
+  transition: clip-path 1000ms var(--ease-out) 100ms;
+}
+
+.figure[data-reveal="done"] .media {
+  transition: transform 1200ms var(--ease-out) 100ms;
+}
+
+/* Tablet: dos columnas iguales. */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+/* Móvil: titular, foto 4:3 con su cota, párrafo e índice. */
+@media (max-width: 699.98px) {
+  .section {
+    padding-block: 0 48px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas:
+      "head"
+      "figure"
+      "body";
+  }
+
+  .head {
+    --display: min(72px, 100cqi / 5);
+    margin-bottom: 28px;
+  }
+
+  .frame {
+    aspect-ratio: 4 / 3;
+  }
+
+  .body {
+    gap: 32px;
+    padding-block: 28px 0;
+  }
+
+  .paragraph {
+    max-width: none;
+  }
+
+  .entry[data-reveal="done"] {
+    transition-delay: 0ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .head[data-reveal],
+  .paragraph[data-reveal],
+  .entry[data-reveal],
+  .figure[data-reveal] .frame,
+  .figure[data-reveal] .media {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,154 @@
+.wrap {
+  position: relative;
+  height: calc(var(--scroll-length) * 1vh);
+}
+
+/* El cursor nativo se oculta solo mientras el punto está visible. */
+.wrap[data-cursor="on"],
+.wrap[data-cursor="on"] a {
+  cursor: none;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  color: #1a1a1a;
+}
+
+.left {
+  position: absolute;
+  left: 40px;
+  top: 40px;
+  bottom: 40px;
+  right: calc(36vw + 80px);
+}
+
+.row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  will-change: transform;
+}
+
+.title {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(28px, 3.1vw, 60px);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  max-width: 22ch;
+  text-wrap: pretty;
+}
+
+.subtitle {
+  margin: 0.9em 0 0;
+  font-size: clamp(15px, 1.25vw, 22px);
+  line-height: 1.4;
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+
+.scrollHint {
+  font-size: clamp(13px, 1vw, 18px);
+  flex-shrink: 0;
+  padding-bottom: 0.3em;
+}
+
+.panel {
+  position: absolute;
+  right: 40px;
+  top: 40px;
+  bottom: 40px;
+  width: 36vw;
+  overflow: hidden;
+  background: #ecebe7;
+}
+
+.inner {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 36vw;
+}
+
+/* Encuadre: cambia object-position para mover la parte visible de la foto. */
+.photo {
+  object-fit: cover;
+  object-position: center;
+}
+
+.cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: 50%;
+  background: #000;
+  pointer-events: none;
+  z-index: 50;
+  visibility: hidden;
+}
+
+/* Con la columna estrecha, la navegación pasa a una segunda línea. */
+/* Móvil: texto arriba e imagen debajo. El panel se reduce en altura. */
+@media (max-width: 699.98px) {
+  .wrap {
+    height: calc(var(--scroll-length) * 1svh);
+  }
+
+  .stage {
+    height: 100svh;
+  }
+
+  .left {
+    left: 20px;
+    right: 20px;
+    top: 20px;
+    bottom: calc(max(0px, 100svh - 379px) + 40px);
+  }
+
+  .row {
+    gap: 16px;
+  }
+
+  .title {
+    font-size: clamp(24px, 7.4vw, 28px);
+    max-width: none;
+  }
+
+  .subtitle {
+    margin-top: 0.6em;
+    max-width: none;
+  }
+
+  .scrollHint {
+    display: none;
+  }
+
+  .panel {
+    left: 20px;
+    right: 20px;
+    top: auto;
+    bottom: 20px;
+    width: auto;
+    height: max(0px, 100svh - 379px);
+  }
+
+  .inner {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: max(0px, 100svh - 379px);
+  }
+}

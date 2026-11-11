@@ -1,0 +1,16 @@
+/* Menú con los mismos márgenes que en el Hero de Inicio. */
+.bar {
+  padding: 40px 40px 0;
+  color: #1a1a1a;
+}
+
+/* Ocupa el alto disponible para que el footer quede abajo aunque no haya contenido. */
+.main {
+  flex: 1;
+}
+
+@media (max-width: 699.98px) {
+  .bar {
+    padding: 20px 20px 0;
+  }
+}

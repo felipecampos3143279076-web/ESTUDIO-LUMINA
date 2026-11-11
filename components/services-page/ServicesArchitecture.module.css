@@ -1,0 +1,473 @@
+.section {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Muros exteriores (doble línea) y tabiques interiores (línea simple). */
+  --wall: rgb(119 118 109 / 0.55);
+  --partition: rgb(119 118 109 / 0.32);
+  --door: 32px;
+  /* El Bloque 1 ya aporta la separación superior. */
+  padding-block: 0 clamp(56px, 6.5vw, 120px);
+  color: #1a1a1a;
+}
+
+/* Cota general: línea fina con remates, sin cifras. */
+.dimension {
+  display: block;
+  height: 9px;
+  margin-bottom: 14px;
+  background: linear-gradient(var(--partition), var(--partition)) center / 100% 1px no-repeat;
+  border-inline: 1px solid var(--wall);
+}
+
+/* Planta. Escritorio: patio (foto) a la izquierda en 7 columnas; a la
+   derecha, el vestíbulo con el titular y, debajo, las cuatro estancias. */
+.plan {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "patio hall"
+    "patio rooms";
+  /* Grosor del muro exterior: el interior queda dentro de la línea interna. */
+  padding: 5px;
+}
+
+/* Muros exteriores: dos líneas de 1 px separadas 5 px. La de abajo deja el
+   hueco de la puerta de acceso al patio. Es un elemento más de la rejilla,
+   así en móvil puede rodear solo el patio y las estancias. */
+.plan::before {
+  content: "";
+  grid-area: 1 / 1 / -1 / -1;
+  margin: -5px;
+  pointer-events: none;
+  background:
+    /* arriba */
+    linear-gradient(var(--wall), var(--wall)) left top / 100% 1px,
+    linear-gradient(var(--wall), var(--wall)) left 5px top 5px / calc(100% - 10px) 1px,
+    /* izquierda */
+    linear-gradient(var(--wall), var(--wall)) left top / 1px 100%,
+    linear-gradient(var(--wall), var(--wall)) left 5px top 5px / 1px calc(100% - 10px),
+    /* derecha, con la puerta de acceso a 24 px de la esquina inferior */
+    linear-gradient(to top, var(--wall) 0 24px, transparent 24px calc(24px + var(--door)), var(--wall) 0)
+      right top / 1px 100%,
+    linear-gradient(to top, var(--wall) 0 19px, transparent 19px calc(19px + var(--door)), var(--wall) 0)
+      right 5px top 5px / 1px calc(100% - 10px),
+    /* abajo */
+    linear-gradient(var(--wall), var(--wall)) left bottom / 100% 1px,
+    linear-gradient(var(--wall), var(--wall)) left 5px bottom 5px / calc(100% - 10px) 1px;
+  background-repeat: no-repeat;
+}
+
+/* Patio: la fotografía, protagonista, separada de los muros como un patio.
+   Mide al menos 4:5 y crece si la columna de la derecha es más alta. */
+.patio {
+  grid-area: patio;
+  position: relative;
+  margin: 0;
+}
+
+.patio::before {
+  content: "";
+  display: block;
+  padding-top: 125%;
+}
+
+.frame {
+  position: absolute;
+  inset: 15px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #ecebe7;
+}
+
+.media {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.photo {
+  object-fit: cover;
+  object-position: center;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 16px;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  color: #5f5f5f;
+}
+
+/* Vestíbulo: el único espacio sin tabiques; aquí va el titular. */
+.hall {
+  grid-area: hall;
+  padding: clamp(28px, 3vw, 48px) clamp(24px, 2.6vw, 44px) clamp(28px, 3vw, 44px);
+  border-left: 1px solid var(--partition);
+  /* El titular se ajusta al ancho del vestíbulo. */
+  container-type: inline-size;
+}
+
+.title {
+  margin: 0;
+  font-weight: 300;
+  font-size: min(72px, 100cqi / 5.8);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+/* Cota corta bajo el titular. */
+.rule {
+  display: block;
+  width: 72px;
+  height: 7px;
+  margin-top: clamp(18px, 1.8vw, 26px);
+  background: linear-gradient(var(--wall), var(--wall)) center / 100% 1px no-repeat;
+  border-inline: 1px solid var(--wall);
+}
+
+.paragraph {
+  margin: clamp(18px, 1.8vw, 26px) 0 0;
+  font-size: clamp(16px, 1.15vw, 19px);
+  line-height: 1.6;
+  color: #555;
+  text-align: justify;
+  hyphens: manual;
+}
+
+/* Estancias: 2 × 2 en escritorio. La pared superior deja un paso abierto
+   desde el vestíbulo. */
+.rooms {
+  grid-area: rooms;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: minmax(clamp(120px, 11vw, 200px), 1fr);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-left: 1px solid var(--partition);
+  background: linear-gradient(to right, var(--partition) 0 24px, transparent 24px 72px, var(--partition) 0)
+    left top / 100% 1px no-repeat;
+}
+
+.room {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 24px 20px;
+  background-repeat: no-repeat;
+  transition: background-color 0.4s var(--ease-out);
+}
+
+/* Relleno arena muy suave al pasar el ratón (solo decorativo). */
+@media (hover: hover) {
+  .room:hover {
+    background-color: rgb(201 189 170 / 0.16);
+  }
+}
+
+/* Rótulo de estancia, como en un plano: mayúsculas espaciadas, centrado. */
+.name {
+  max-width: 24ch;
+  font-weight: 500;
+  font-size: clamp(12.5px, 0.95vw, 14px);
+  line-height: 1.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* Puertas: hoja y arco de giro en línea muy fina. */
+.door,
+.entrance {
+  position: absolute;
+  width: var(--door);
+  height: var(--door);
+  overflow: visible;
+  fill: none;
+  stroke: var(--wall);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+/* Puerta de acceso en el muro exterior derecho de la última estancia. */
+.entrance {
+  left: 100%;
+  top: calc(100% - 19px - var(--door));
+  transform-origin: 0 0;
+  transform: rotate(90deg);
+}
+
+/* Escritorio: tabiques de la cuadrícula 2 × 2 y dos puertas interiores. */
+.room:nth-child(2) {
+  /* Muro izquierdo con puerta desde la estancia 1. */
+  background-image: linear-gradient(to bottom, var(--partition) 0 24px, transparent 24px calc(24px + var(--door)), var(--partition) 0);
+  background-size: 1px 100%;
+  background-position: left top;
+}
+
+.room:nth-child(2) .door {
+  top: 24px;
+  left: 0;
+  transform-origin: 0 0;
+  transform: rotate(-90deg) scaleX(-1);
+}
+
+.room:nth-child(3) {
+  background-image: linear-gradient(var(--partition), var(--partition));
+  background-size: 100% 1px;
+  background-position: left top;
+}
+
+.room:nth-child(3) .door {
+  display: none;
+}
+
+.room:nth-child(4) {
+  /* Muro superior con puerta hacia la estancia 2 y muro izquierdo liso. */
+  background-image:
+    linear-gradient(to right, var(--partition) 0 24px, transparent 24px calc(24px + var(--door)), var(--partition) 0),
+    linear-gradient(var(--partition), var(--partition));
+  background-size: 100% 1px, 1px 100%;
+  background-position: left top, left top;
+}
+
+.room:nth-child(4) .door {
+  top: 0;
+  left: 24px;
+}
+
+/* Animaciones: los muros se trazan de izquierda a derecha, la foto se
+   descubre (Image Reveal) y el texto y las estancias entran con Fade Up. */
+.plan[data-reveal="pending"]::before {
+  clip-path: inset(0 100% 0 0);
+}
+
+.plan[data-reveal="pending"] .frame {
+  clip-path: inset(100% 0 0 0 round 12px);
+}
+
+.plan[data-reveal="pending"] .media {
+  transform: scale(1.06);
+}
+
+.plan[data-reveal="pending"] .hall,
+.plan[data-reveal="pending"] .room,
+.plan[data-reveal="pending"] .door,
+.plan[data-reveal="pending"] .entrance,
+.plan[data-reveal="pending"] .rooms {
+  opacity: 0;
+}
+
+.plan[data-reveal="pending"] .hall {
+  transform: translate3d(0, 24px, 0);
+}
+
+.plan[data-reveal="pending"] .room {
+  transform: translate3d(0, 16px, 0);
+}
+
+.plan[data-reveal="done"]::before {
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 1300ms var(--ease-out);
+}
+
+.plan[data-reveal="done"] .frame {
+  clip-path: inset(0 0 0 0 round 12px);
+  transition: clip-path 1000ms var(--ease-out) 250ms;
+}
+
+.plan[data-reveal="done"] .media {
+  transition: transform 1200ms var(--ease-out) 250ms;
+}
+
+.plan[data-reveal="done"] .rooms,
+.plan[data-reveal="done"] .door,
+.plan[data-reveal="done"] .entrance {
+  transition: opacity 900ms var(--ease-out) 400ms;
+}
+
+.plan[data-reveal="done"] .hall {
+  transition:
+    opacity 700ms var(--ease-out) 300ms,
+    transform 700ms var(--ease-out) 300ms;
+}
+
+.plan[data-reveal="done"] .room {
+  transition:
+    opacity 700ms var(--ease-out) calc(500ms + var(--i) * 90ms),
+    transform 700ms var(--ease-out) calc(500ms + var(--i) * 90ms),
+    background-color 0.4s var(--ease-out);
+}
+
+/* Tablet: dos columnas iguales; las estancias pasan a una columna y las
+   puertas alternan de lado. La foto llena la altura del patio. */
+@media (max-width: 1024px) {
+  /* Tablet: el vestíbulo pasa arriba a todo el ancho; debajo, el patio en
+     4:5 y las cuatro estancias apiladas a su lado con la misma altura. */
+  .plan {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      "hall hall"
+      "patio rooms";
+  }
+
+  .hall {
+    border-left: 0;
+  }
+
+  .paragraph {
+    max-width: 62ch;
+  }
+
+  .patio {
+    background: linear-gradient(var(--partition), var(--partition)) left top / 100% 1px no-repeat;
+  }
+
+  .rooms {
+    grid-template-columns: minmax(0, 1fr);
+    grid-auto-rows: minmax(72px, 1fr);
+  }
+
+  .room {
+    padding: 20px;
+  }
+
+  .room:nth-child(n + 2) {
+    background-image: linear-gradient(to right, var(--partition) 0 24px, transparent 24px calc(24px + var(--door)), var(--partition) 0);
+    background-size: 100% 1px;
+    background-position: left top;
+  }
+
+  .room:nth-child(3) {
+    background-image: linear-gradient(to left, var(--partition) 0 24px, transparent 24px calc(24px + var(--door)), var(--partition) 0);
+  }
+
+  .room:nth-child(n + 2) .door {
+    display: block;
+    top: 0;
+    left: 24px;
+    right: auto;
+    transform: none;
+  }
+
+  .room:nth-child(3) .door {
+    left: auto;
+    right: 24px;
+    transform: scaleX(-1);
+  }
+}
+
+/* Móvil: titular arriba, fuera de los muros; debajo, la planta en hilera con
+   el patio (foto 4:3) y las cuatro estancias apiladas. */
+@media (max-width: 699.98px) {
+  .section {
+    padding-block: 0 48px;
+  }
+
+  .dimension {
+    display: none;
+  }
+
+  .plan {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "hall"
+      "patio"
+      "rooms";
+  }
+
+  .plan::before {
+    grid-area: 2 / 1 / -1 / -1;
+    margin: 0 -5px -5px;
+    background:
+      linear-gradient(var(--wall), var(--wall)) left top / 100% 1px,
+      linear-gradient(var(--wall), var(--wall)) left 5px top 5px / calc(100% - 10px) 1px,
+      linear-gradient(var(--wall), var(--wall)) left top / 1px 100%,
+      linear-gradient(var(--wall), var(--wall)) left 5px top 5px / 1px calc(100% - 10px),
+      linear-gradient(to top, var(--wall) 0 24px, transparent 24px calc(24px + var(--door)), var(--wall) 0)
+        right top / 1px 100%,
+      linear-gradient(to top, var(--wall) 0 19px, transparent 19px calc(19px + var(--door)), var(--wall) 0)
+        right 5px top 5px / 1px calc(100% - 10px),
+      linear-gradient(var(--wall), var(--wall)) left bottom / 100% 1px,
+      linear-gradient(var(--wall), var(--wall)) left 5px bottom 5px / calc(100% - 10px) 1px;
+    background-repeat: no-repeat;
+  }
+
+  /* El vestíbulo queda fuera de los muros, alineado con el contenedor. */
+  .hall {
+    margin: -5px -5px 0;
+    padding: 0 0 32px;
+  }
+
+  .patio {
+    background: none;
+  }
+
+  .title {
+    font-size: min(56px, 100cqi / 5.6);
+  }
+
+  .patio::before {
+    padding-top: 75%;
+  }
+
+  .frame {
+    inset: 11px;
+  }
+
+  .rooms {
+    grid-auto-rows: minmax(68px, auto);
+    border-left: 0;
+  }
+
+  .room {
+    padding: 22px 24px;
+  }
+
+  .name {
+    font-size: 13px;
+    max-width: none;
+  }
+
+  .plan[data-reveal="pending"]::before {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  .plan[data-reveal="done"] .room {
+    transition-delay: 300ms, 300ms, 0ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plan[data-reveal]::before,
+  .plan[data-reveal] .frame,
+  .plan[data-reveal] .media,
+  .plan[data-reveal] .hall,
+  .plan[data-reveal] .rooms,
+  .plan[data-reveal] .room,
+  .plan[data-reveal] .door,
+  .plan[data-reveal] .entrance {
+    opacity: 1;
+    clip-path: none;
+    transition: none;
+  }
+
+  .plan[data-reveal] .hall,
+  .plan[data-reveal] .room,
+  .plan[data-reveal] .media {
+    transform: none;
+  }
+
+  .room {
+    transition: none;
+  }
+}

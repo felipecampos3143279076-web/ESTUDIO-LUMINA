@@ -1,0 +1,26 @@
+/*
+ * Reglas compartidas de ancho y márgenes para las páginas interiores.
+ * Mismo ancho centrado que las secciones de Inicio («Proyectos», «Cifras»…).
+ */
+.section {
+  --gap: clamp(16px, 2vw, 32px);
+  padding-inline: 40px;
+}
+
+.container {
+  /* Ancho de tres fotografías de Inicio y sus dos separaciones. */
+  width: calc(((100% - 40px) * 7 / 12 - var(--gap)) / 2 * 3 + var(--gap) * 2);
+  margin-inline: auto;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 699.98px) {
+  .section {
+    padding-inline: 20px;
+  }
+}

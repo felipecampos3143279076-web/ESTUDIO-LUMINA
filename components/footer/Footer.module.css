@@ -1,0 +1,139 @@
+/* Fondo carbón a todo el ancho; contenido con el ancho de las secciones. */
+.footer {
+  --gap: clamp(16px, 2vw, 32px);
+  --photo: calc(((100% - 40px) * 7 / 12 - var(--gap)) / 2);
+  padding: clamp(36px, 3.5vw, 56px) 40px 20px;
+  background: #292925;
+  color: #fff;
+}
+
+.inner {
+  width: calc(var(--photo) * 3 + var(--gap) * 2);
+  margin: 0 auto;
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px calc(var(--gap) * 2);
+}
+
+.brand {
+  margin: 0;
+  font-weight: 300;
+  font-size: clamp(18px, 1.5vw, 24px);
+  letter-spacing: 0.24em;
+  line-height: 1.2;
+}
+
+.description {
+  margin: 14px 0 0;
+  max-width: 34ch;
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.6;
+  color: #a3a3a3;
+}
+
+.heading {
+  margin: 0 0 14px;
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a3a3a3;
+}
+
+.list,
+.legal {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.term {
+  font-size: 13px;
+  color: #a3a3a3;
+}
+
+.item {
+  margin: 4px 0 0;
+  font-size: clamp(15px, 1.05vw, 17px);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.legal .item {
+  margin: 0;
+}
+
+.link {
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgb(255 255 255 / 0.35);
+  transition: border-color 0.25s;
+}
+
+.link:hover {
+  border-color: #fff;
+}
+
+.link:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+.pending,
+.muted {
+  color: #a3a3a3;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px 24px;
+  margin-top: clamp(28px, 3vw, 44px);
+  padding-top: 16px;
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+  font-size: 13px;
+  color: #a3a3a3;
+}
+
+.bottom p {
+  margin: 0;
+}
+
+@media (max-width: 1024px) {
+  .inner {
+    width: 100%;
+  }
+}
+
+/* Tablet: identidad arriba, contacto y legal lado a lado. */
+@media (min-width: 700px) and (max-width: 1024px) {
+  .columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 36px;
+  }
+
+  .identity {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Móvil: tres bloques en vertical. */
+@media (max-width: 699.98px) {
+  .footer {
+    padding: 36px 20px 20px;
+  }
+
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 32px;
+  }
+
+  .bottom {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,272 @@
+.section {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --gap: clamp(16px, 2vw, 32px);
+  /* Mismo ancho centrado que «Proyectos destacados» y «Cifras». */
+  --photo: calc(((100% - 40px) * 7 / 12 - var(--gap)) / 2);
+  /* Acerca la sección a «Cifras», cuyo padding inferior ya separa ambos bloques. */
+  margin-top: calc(-1 * clamp(24px, 3.6vw, 72px));
+  padding: 0 40px clamp(72px, 8vw, 140px);
+  color: #1a1a1a;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-areas:
+    "intro map"
+    "actions map"
+    "address map";
+  grid-template-rows: auto auto 1fr;
+  column-gap: calc(var(--gap) * 2);
+  width: calc(var(--photo) * 3 + var(--gap) * 2);
+  margin: 0 auto;
+}
+
+.intro {
+  grid-area: intro;
+}
+
+.actions {
+  grid-area: actions;
+  margin-top: clamp(28px, 2.6vw, 44px);
+}
+
+/* Mapa dentro de un contenedor con borde fino y encabezado pequeño. */
+.map {
+  grid-area: map;
+  display: flex;
+  flex-direction: column;
+  min-height: clamp(380px, 34vw, 560px);
+  padding: 10px;
+  border: 1px solid rgb(26 26 26 / 0.12);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 0.4);
+}
+
+.mapLabel {
+  margin: 6px 8px 12px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5f5f5f;
+}
+
+.mapFrame {
+  flex: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #ecebe7;
+}
+
+.mapFrame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.address {
+  grid-area: address;
+  align-self: end;
+  margin-top: clamp(28px, 2.6vw, 44px);
+  font-style: normal;
+}
+
+/* Tarjetas discretas: fondo sutil y borde fino, sin sombras. */
+.card {
+  padding: 16px 18px;
+  border: 1px solid rgb(26 26 26 / 0.12);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 0.4);
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+}
+
+.title {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(28px, 2.6vw, 48px);
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  max-width: 16ch;
+  text-wrap: pretty;
+}
+
+.text {
+  margin: 1.1em 0 0;
+  font-size: clamp(16px, 1.15vw, 20px);
+  line-height: 1.55;
+  color: #555;
+  max-width: 40ch;
+  text-wrap: pretty;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 28px;
+  border-radius: 999px;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: clamp(15px, 1.1vw, 18px);
+  text-decoration: none;
+  transition: background-color 0.25s;
+}
+
+a.button:hover {
+  background: #3a3a3a;
+}
+
+.button[aria-disabled="true"] {
+  cursor: default;
+}
+
+.button:focus-visible,
+.link:focus-visible {
+  outline: 2px solid #1a1a1a;
+  outline-offset: 4px;
+}
+
+/* Teléfono y correo lado a lado; pasan a dos filas si no caben. */
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: clamp(28px, 2.6vw, 40px) 0 0;
+}
+
+.details .card {
+  flex: 1 1 180px;
+}
+
+.details .value {
+  white-space: nowrap;
+}
+
+.term {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: #5f5f5f;
+}
+
+.value {
+  display: block;
+  margin: 6px 0 0;
+  font-size: clamp(15px, 1.1vw, 19px);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.link {
+  color: #1a1a1a;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  transition: color 0.25s;
+}
+
+.link:hover {
+  color: #767676;
+}
+
+.pending {
+  color: #5f5f5f;
+}
+
+/* Fade Up: solo cuando JavaScript marca la sección. */
+.section[data-reveal="pending"] .reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+}
+
+.section[data-reveal="done"] .reveal {
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+
+.section[data-reveal="done"] .actions {
+  transition-delay: 100ms;
+}
+
+.section[data-reveal="done"] .map {
+  transition-delay: 150ms;
+}
+
+.section[data-reveal="done"] .address {
+  transition-delay: 200ms;
+}
+
+/* Tablet y móvil: una columna; el mapa va antes de la dirección. */
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "intro"
+      "actions"
+      "map"
+      "address";
+    grid-template-rows: auto;
+    width: 100%;
+  }
+
+  .map {
+    min-height: 0;
+    margin-top: 48px;
+  }
+
+  .mapFrame {
+    flex: none;
+    aspect-ratio: 16 / 10;
+  }
+
+  .address {
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 699.98px) {
+  .section {
+    padding: 0 20px 72px;
+  }
+
+  .title {
+    font-size: clamp(24px, 7vw, 28px);
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .details .card {
+    flex-basis: 100%;
+  }
+
+  .details .value {
+    white-space: normal;
+  }
+
+  .map {
+    margin-top: 40px;
+  }
+
+  .mapFrame {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section[data-reveal] .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

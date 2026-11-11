@@ -1,0 +1,100 @@
+.section {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* El bloque anterior ya aporta la separación superior. */
+  padding-block: 0 clamp(56px, 6.5vw, 120px);
+}
+
+/* Panel carbón dentro del ancho común; así no se funde con el footer. */
+.panel {
+  padding: clamp(64px, 7vw, 120px) 24px;
+  border-radius: 12px;
+  background: #292925;
+  color: #fff;
+}
+
+.content {
+  max-width: 640px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.title {
+  margin: 0 auto;
+  max-width: 20ch;
+  font-weight: 400;
+  font-size: clamp(28px, 3vw, 52px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.text {
+  margin: 1.2em auto 0;
+  max-width: 46ch;
+  font-size: clamp(16px, 1.2vw, 20px);
+  line-height: 1.6;
+  color: #a3a3a3;
+  text-wrap: pretty;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  margin-top: clamp(28px, 2.8vw, 44px);
+  padding: 0 28px;
+  border-radius: 999px;
+  background: #fff;
+  color: #1a1a1a;
+  font-size: clamp(15px, 1.1vw, 18px);
+  text-decoration: none;
+  transition: background-color 0.25s;
+}
+
+a.button:hover {
+  background: #ecebe7;
+}
+
+.button[aria-disabled="true"] {
+  cursor: default;
+}
+
+.button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 4px;
+}
+
+/* Fade Up al entrar en pantalla. */
+.section[data-reveal="pending"] .content {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+}
+
+.section[data-reveal="done"] .content {
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+
+@media (max-width: 699.98px) {
+  .section {
+    padding-block: 0 48px;
+  }
+
+  .panel {
+    padding: 56px 20px;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section[data-reveal] .content {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
