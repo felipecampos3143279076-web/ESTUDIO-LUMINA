@@ -7,5 +7,9 @@ export const metadata: Metadata = {
 
 // Contenido pendiente: se desarrollará en los próximos bloques.
 export default function ContactPage() {
-  return <InnerPage />;
+  return (
+<div>
+<p>AQUI VA EL DETALLE DEL CONTACTO</p>
+</div>
+)
 }
